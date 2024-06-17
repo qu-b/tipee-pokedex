@@ -1,21 +1,6 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Pokemon } from "../components/PokemonListing/PokemonListing";
-import { useQuery } from "react-query";
-
-const fetchPokemonList = async (page: number) => {
-  const response = await axios.get(
-    `https://pokeapi.co/api/v2/pokemon?limit=48&offset=${(page - 1) * 48}`
-  );
-  return response.data.results;
-};
-
-export const usePokemonList = (page: number) => {
-  return useQuery(["pokemonList", page], () => fetchPokemonList(page), {
-    keepPreviousData: true,
-  });
-};
+import { usePokemonList } from "./usePokemonList";
 
 export function usePokemonPagination() {
   const location = useLocation();
