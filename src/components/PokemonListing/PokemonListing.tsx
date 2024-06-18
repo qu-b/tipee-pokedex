@@ -23,26 +23,16 @@ export interface Pokemon {
 }
 
 export default function PokemonListing() {
-  const { pokemon, page, handleNextPage, handlePrevPage, isLoading, isError } =
+  const { pokemon, page, handleNextPage, handlePrevPage } =
     usePokemonPagination();
   const { modalOpen, selectedPokemon, openModal, closeModal } = useModalState();
-  const {
-    data: pokemonDetails,
-    isLoading: detailsLoading,
-    isError: detailsError,
-  } = usePokemonDetails(selectedPokemon?.url || "");
+  const { data: pokemonDetails } = usePokemonDetails(
+    selectedPokemon?.url || ""
+  );
 
   const handlePokemonClick = (pokemon: Pokemon) => {
     openModal(pokemon);
   };
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    return <div>Error fetching Pokémon list</div>;
-  }
 
   return (
     <S.Container>
@@ -77,11 +67,7 @@ export default function PokemonListing() {
 
       <Modal open={modalOpen} onClose={closeModal}>
         <S.ModalContent>
-          {detailsLoading ? (
-            <Typography variant="h6">Loading...</Typography>
-          ) : detailsError ? (
-            <Typography variant="h6">Error loading Pokémon details</Typography>
-          ) : pokemonDetails && pokemonDetails.sprites ? (
+          {pokemonDetails && pokemonDetails.sprites ? (
             <PokemonCardModal
               image={
                 pokemonDetails.sprites.front_default || "default_image_url"
